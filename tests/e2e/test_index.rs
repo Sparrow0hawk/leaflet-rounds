@@ -18,7 +18,7 @@ async fn test_index_shows_hello_world() {
 
     let header = driver.find(By::Tag("h1")).await.unwrap();
 
-    assert!(header.text().await.unwrap() == "Hello world!");
+    assert!(header.text().await.unwrap() == "Map my round");
 
     driver.quit().await.unwrap();
 }
