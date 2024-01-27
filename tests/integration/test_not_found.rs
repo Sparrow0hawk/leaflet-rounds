@@ -1,23 +1,39 @@
 use crate::fixtures;
+use actix_web::{test, web, App};
+use leaflet_rounds::routes::{index, not_found};
 
 #[actix_web::test]
-async fn test_page_not_found() {
-    let app = fixtures::spawn_app().await;
+async fn test_page_not_found_title() {
+    let app = test::init_service(
+        App::new()
+            .route("/", web::get().to(index))
+            .default_service(web::get().to(not_found)),
+    )
+    .await;
 
-    let client = reqwest::Client::new();
+    let req = test::TestRequest::get().uri("/foo").to_request();
 
-    let resp = client
-        .get(&format!("{}/foo", &app.address))
-        .send()
-        .await
-        .expect("Failed to execute request");
+    let resp = test::call_and_read_body(&app, req).await;
 
-    let status = resp.status().clone();
-
-    let page_str = &resp.text().await.unwrap();
+    let page_str = std::str::from_utf8(resp.as_ref()).unwrap();
 
     let page = fixtures::get_page_element(page_str, "h1");
 
     assert_eq!(page, "Page not found");
-    assert_eq!(status, 404)
+}
+
+#[actix_web::test]
+async fn test_page_not_found_status() {
+    let app = test::init_service(
+        App::new()
+            .route("/", web::get().to(index))
+            .default_service(web::get().to(not_found)),
+    )
+    .await;
+
+    let req = test::TestRequest::get().uri("/foo").to_request();
+
+    let resp = test::call_service(&app, req).await;
+
+    assert_eq!(resp.status(), 404)
 }
