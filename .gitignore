@@ -5,3 +5,6 @@
 
 # selenium
 drivers/geckodriver
+
+# node
+node_modules

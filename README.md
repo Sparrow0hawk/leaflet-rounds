@@ -6,12 +6,18 @@ Find the streets in a series of drawings on a map.
 
 To use this repository you will need:
 - Rust
+- Node and NPM
 
 ### Local
 
 To run locally:
 
-1. Run cargo
+1. Build assets
+   ```bash
+   npm install && npm run build
+   ```
+
+2. Run cargo
 
     ```bash
     cargo run
@@ -36,12 +42,17 @@ To run locally:
 
 If you have Docker installed you can build the app with the following commands:
 
-1. Build the image
+1. Build assets
+   ```bash
+   npm install && npm run build
+   ```
+
+2. Build the image
    ```bash
    docker build . -t leaflet-rounds
    ```
 
-2. Run the image
+3. Run the image
    ```bash
    docker run --rm -p 8080:8080 leaflet-rounds:latest
    ```

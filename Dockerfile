@@ -14,6 +14,7 @@ RUN useradd -ms /bin/bash app
 USER app
 WORKDIR /app
 
+COPY ./static /app/static
 COPY --from=builder /usr/src/app/leaflet_rounds /app/leaflet_rounds
 
 # Run the app
