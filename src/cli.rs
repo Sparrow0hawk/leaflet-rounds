@@ -18,7 +18,7 @@ pub fn parse_args() -> Result<Args, lexopt::Error> {
                 port = parser.value()?.parse()?;
             }
             Long("help") => {
-                println!("Usage: actix_starter [-h|--host=X.X.X.X] [-p|--port=XXXX]");
+                println!("Usage: leaflet_rounds [-h|--host=X.X.X.X] [-p|--port=XXXX]");
                 std::process::exit(0);
             }
             _ => return Err(arg.unexpected()),
