@@ -1,13 +1,21 @@
 use crate::fixtures;
-use thirtyfour::prelude::*;
+use fantoccini::wd::Capabilities;
+use fantoccini::{ClientBuilder, Locator};
+use serde_json::json;
 
 #[tokio::test]
 async fn test_index_shows_hello_world() {
     let app = fixtures::spawn_app().await;
 
-    let mut caps = DesiredCapabilities::firefox();
-    caps.set_headless().expect("Error setting headless mode");
-    let driver = WebDriver::new("http://localhost:4444", caps)
+    let mut caps = Capabilities::new();
+    caps.insert(
+        String::from("moz:firefoxOptions"),
+        json!({"args": ["--headless"]}),
+    );
+
+    let driver = ClientBuilder::native()
+        .capabilities(caps)
+        .connect("http://localhost:4444")
         .await
         .expect("Web driver failed to start");
 
@@ -16,9 +24,9 @@ async fn test_index_shows_hello_world() {
         .await
         .expect("Failed to load home page");
 
-    let header = driver.find(By::Tag("h1")).await.unwrap();
+    let header = driver.find(Locator::Css("h1")).await.unwrap();
 
     assert!(header.text().await.unwrap() == "Map my round");
 
-    driver.quit().await.unwrap();
+    driver.close().await.unwrap();
 }
