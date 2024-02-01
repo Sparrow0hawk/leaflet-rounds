@@ -1,24 +1,29 @@
 use crate::fixtures;
 use thirtyfour::prelude::*;
 
+async fn find_tag_text(driver: &WebDriver, tag_name: &str) -> WebDriverResult<String> {
+    let tag = driver.find(By::Tag(tag_name)).await?;
+    tag.text().await
+}
+
 #[tokio::test]
-async fn test_index_shows_hello_world() {
+async fn test_index_shows_hello_world() -> WebDriverResult<()> {
     let app = fixtures::spawn_app().await;
 
     let mut caps = DesiredCapabilities::firefox();
-    caps.set_headless().expect("Error setting headless mode");
+    caps.set_headless()?;
     let driver = WebDriver::new("http://localhost:4444", caps)
-        .await
-        .expect("Web driver failed to start");
+        .await?;
 
     driver
         .goto(&app.address)
-        .await
-        .expect("Failed to load home page");
+        .await?;
 
-    let header = driver.find(By::Tag("h1")).await.unwrap();
+    let header_text = find_tag_text(&driver, "h1").await;
 
-    assert!(header.text().await.unwrap() == "Map my round");
+    driver.quit().await?;
 
-    driver.quit().await.unwrap();
+    assert_eq!(header_text?, "Map my round");
+
+    Ok(())
 }
