@@ -7,15 +7,25 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "npm run build-css && npm run copy-assets",
+    "build": "npm run build:create-static && npm run build-css && npm run copy-assets && npm run leaflet:build && npm run leaflet-geoman:build",
     "build-css": "sass --no-source-map --style compressed assets/main.scss static/main.min.css",
-    "copy-assets": "cp -r node_modules/bootstrap/dist/js static/"
-  },
+    "build:create-static": "mkdir -p static/leaflet static/leaflet-geoman static/js",
+    "copy-assets": "cp -r node_modules/bootstrap/dist/js static/",
+    "leaflet:build": "npm run leaflet:copy-css && npm run leaflet:copy-images && npm run leaflet:copy-js",
+    "leaflet:copy-images": "cp -R node_modules/leaflet/dist/images static/leaflet/images",
+    "leaflet:copy-js": "cp node_modules/leaflet/dist/leaflet.js* static/leaflet/",
+    "leaflet:copy-css": "cp node_modules/leaflet/dist/leaflet.css static/leaflet/leaflet.css",
+    "leaflet-geoman:build": "npm run leaflet-geoman:copy-js && npm run leaflet-geoman:copy-css",
+    "leaflet-geoman:copy-js": "cp node_modules/@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.min.js* static/leaflet-geoman/",
+    "leaflet-geoman:copy-css": "cp node_modules/@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css static/leaflet-geoman/leaflet-geoman.css"
+},
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^5.3.2",
-    "sass": "^1.68.0"
+    "sass": "^1.68.0",
+    "@geoman-io/leaflet-geoman-free": "^2.15.0",
+    "leaflet": "^1.9.4"
   },
   "engines": {
     "node": "21",

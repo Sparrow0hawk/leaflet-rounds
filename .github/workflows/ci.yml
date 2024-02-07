@@ -15,6 +15,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+      - name: Build Node assets
+        run: npm install && npm run build
       - name: Install geckodriver and start
         run: |
           sudo apt-get update
@@ -23,7 +29,7 @@ jobs:
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@stable
       - name: Run tests
-        run: cargo test
+        run: cargo test -- --test-threads=1
 
   check:
     name: Run cargo check
@@ -32,7 +38,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Install toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
       - name: Run cargo check
         run: cargo check
 
@@ -43,6 +49,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Install toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
       - name: Run cargo check
         run: cargo clippy

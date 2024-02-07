@@ -5,6 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/leaflet/leaflet.css">
+    <link rel="stylesheet" href="/static/leaflet-geoman/leaflet-geoman.css">
+    <script src="/static/leaflet/leaflet.js"></script>
+    <script src="/static/leaflet-geoman/leaflet-geoman.min.js"></script>
     <link rel="stylesheet" href="/static/main.min.css">
 </head>
 
@@ -20,4 +24,25 @@
 </div>
 </body>
 <script src="/static/js/bootstrap.bundle.min.js"></script>
+<script>
+    const map = L.map('map', {pmIgnore: false}).setView([51.505, -0.09], 13);
+
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    map.pm.addControls({
+        position: 'topright',
+        drawCircleMarker: false,
+        drawPolygon: true,
+        drawMarker: false,
+        drawRectangle: false,
+        drawPolyline: false,
+        drawCircle: false,
+        drawText: false,
+        rotateMode: false,
+    })
+</script>
 </html>
