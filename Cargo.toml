@@ -17,8 +17,9 @@ name = "leaflet_rounds"
 actix-files = "0.6.2"
 actix-web = "4"
 askama = "0.12.1"
+config = "0.14.0"
 env_logger = "0.10.1"
-lexopt = "0.3.0"
+serde = { version = "1.0.196", features = ["derive"] }
 
 
 [dev-dependencies]

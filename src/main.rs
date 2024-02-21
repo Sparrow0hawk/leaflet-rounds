@@ -6,9 +6,9 @@ use std::net::TcpListener;
 async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(Env::default().default_filter_or("info"));
 
-    let args = leaflet_rounds::cli::parse_args().expect("Error parsing arguments");
+    let settings = leaflet_rounds::configuration::get_configuration().expect("Unable to parse configuration file");
 
-    let address = format!("{}:{}", args.host, args.port);
+    let address = format!("{}:{}", settings.host, settings.port);
     println!("App listening on http://{}", &address);
 
     let listener = TcpListener::bind(address)?;
